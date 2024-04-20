@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Styling */
+        body {
+            background-image: url("F:\\Semester 8\\Major Project\\Website\\img2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .precautions-box {
+            background-color: #105FF2;
+            border: 1px solid #10EBF2;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;  /* Set text color to white */
+            font-size: 1.2em;  /* Increase font size */
+        }
+
+        .card {
+            margin-top: 20px;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        #recommendations .card:nth-child(1) {
+            background: linear-gradient(45deg, #007bff, #1e90ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(2) {
+            background: linear-gradient(45deg, #1e90ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(3) {
+            background: linear-gradient(45deg, #007bff, #4b89da);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(4) {
+            background: linear-gradient(45deg, #4b89da, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(5) {
+            background: linear-gradient(45deg, #007bff, #5c96ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(6) {
+            background: linear-gradient(45deg, #5c96ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card-body {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Temperature Report</h1>
+        <div id="report-container"></div>
+
+        <div class="precautions-box mt-4" id="precautions" style="display: none;">
+            <p id="precautions-text"></p>
+        </div>
+
+        <!-- Recommendations cards -->
+        <div class="row mt-4" id="recommendations"></div>
+    </div>
+
+    <script>
+        // Function to read URL parameters
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Function to assess the temperature condition and provide precautions
+        function assessTemperature(temperature) {
+            const reportContainer = document.getElementById("report-container");
+            const precautionsDiv = document.getElementById("precautions");
+            const precautionsText = document.getElementById("precautions-text");
+            const recommendationsDiv = document.getElementById("recommendations");
+
+            // Convert temperature to a number
+            const tempValue = parseFloat(temperature);
+
+            // Assess temperature and provide feedback
+            let reportMessage = '';
+            let precautionsMessage = '';
+            let recommendations = [];
+            if (isNaN(tempValue)) {
+                reportMessage = 'Invalid temperature value provided.';
+            } else {
+                if (tempValue < 95) {
+                    // Low temperature condition
+                    reportMessage = `Temperature: ${tempValue}°F - Low temperature`;
+                    precautionsMessage = 'Keep warm, wear layered clothing, and avoid prolonged exposure to cold temperatures. Potential problems: Hypothermia, frostbite.';
+                    recommendations = [
+                        { text: 'Wear multiple layers of clothing to trap body heat and maintain warmth.', },
+                        { text: 'Use blankets to stay warm while indoors and maintain a comfortable temperature.', },
+                        { text: 'Avoid staying outdoors for extended periods in cold weather to prevent cold-related illnesses.', },
+                        { text: 'Avoid drinking alcohol and caffeine as they can cause heat loss and lower body temperature.', },
+                        { text: 'Check home heating systems regularly for proper functioning to ensure a warm environment.', },
+                        { text: 'Always keep emergency contact numbers handy in case of cold-related emergencies.', }
+                    ];
+                } else if (tempValue > 100) {
+                    // High temperature condition
+                    reportMessage = `Temperature: ${tempValue}°F - High temperature`;
+                    precautionsMessage = 'Stay hydrated, rest, and avoid strenuous activity. Potential problems: Heat exhaustion, heat stroke.';
+                    recommendations = [
+                        { text: 'Drink at least 8 glasses of water daily to stay hydrated and help regulate body temperature.', },
+                        { text: 'Rest in cool places to lower your body temperature and avoid overheating.', },
+                        { text: 'Use fans or air conditioning to cool down your living spaces and create a comfortable environment.', },
+                        { text: 'Stay out of direct sunlight during peak hours to reduce exposure to intense heat.', },
+                        { text: 'Wear light-colored, loose-fitting clothing to help reflect heat and keep your body cooler.', },
+                        { text: 'Seek immediate medical help if you experience dizziness, nausea, or fainting due to high temperature.', }
+                    ];
+                } else {
+                    // Normal temperature condition
+                    reportMessage = `Temperature: ${tempValue}°F - Normal temperature`;
+                    precautionsMessage = 'Your temperature is within the normal range. No specific precautions are necessary.';
+                    recommendations = [
+                        { text: 'Continue to monitor your temperature regularly to ensure it remains stable.', },
+                        { text: 'Maintain a balanced diet rich in fruits and vegetables to support overall health and well-being.', },
+                        { text: 'Engage in regular physical activity to maintain overall health and promote a stable body temperature.', },
+                        { text: 'Stay hydrated by drinking at least 8 glasses of water daily to support proper body functions.', },
+                        { text: 'Avoid smoking and excessive consumption of alcohol to maintain a healthy body temperature and overall health.', },
+                        { text: 'Ensure you get adequate sleep every night to support proper body temperature regulation and overall well-being.', }
+                    ];
+                }
+            }
+
+            // Display report message
+            reportContainer.innerHTML = `<h4>${reportMessage}</h4>`;
+
+            // Display precautions if applicable
+            if (precautionsMessage) {
+                precautionsDiv.style.display = 'block';
+                precautionsText.textContent = precautionsMessage;
+            }
+
+            // Display recommendations
+            recommendationsDiv.innerHTML = recommendations.map((recommendation, index) => `
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recommendation ${index + 1}</h5>
+                            <p class="card-text">${recommendation.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get the temperature value from the URL and assess it
+        const temperatureValue = getURLParameter("value");
+        assessTemperature(temperatureValue);
+    </script>
+</body>
+
+</html>

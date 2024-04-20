@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPO2 Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Styling */
+
+	body {
+            background-image: url("F:\\Semester 8\\Major Project\\Website\\img2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .precautions-box {
+            background-color: #105FF2;
+            border: 1px solid #10EBF2;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;  /* Set text color to white */
+            font-size: 1.2em;  /* Increase font size */
+        }
+
+        .card {
+            margin-top: 20px;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        #recommendations .card:nth-child(1) {
+            background: linear-gradient(45deg, #007bff, #1e90ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(2) {
+            background: linear-gradient(45deg, #1e90ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(3) {
+            background: linear-gradient(45deg, #007bff, #4b89da);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(4) {
+            background: linear-gradient(45deg, #4b89da, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(5) {
+            background: linear-gradient(45deg, #007bff, #5c96ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(6) {
+            background: linear-gradient(45deg, #5c96ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card-body {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">SPO2 Report</h1>
+
+        <div id="report-container" class="mt-4"></div>
+
+        <div class="precautions-box mt-4" id="precautions" style="display: none;">
+            <p id="precautions-text"></p>
+        </div>
+
+        <!-- Recommendations cards -->
+        <div class="row mt-4" id="recommendations"></div>
+    </div>
+
+    <script>
+        // Function to assess the SPO2 condition and provide precautions
+        function assessSPO2(spo2) {
+            const reportContainer = document.getElementById("report-container");
+            const precautionsDiv = document.getElementById("precautions");
+            const precautionsText = document.getElementById("precautions-text");
+            const recommendationsDiv = document.getElementById("recommendations");
+
+            // Convert SPO2 to a number
+            const spo2Value = parseFloat(spo2);
+
+            // Assess SPO2 and provide feedback
+            let reportMessage = '';
+            let precautionsMessage = '';
+            let recommendations = [];
+            if (isNaN(spo2Value)) {
+                reportMessage = 'Invalid SPO2 value provided.';
+            } else {
+                if (spo2Value < 90) {
+                    // Low SPO2 condition
+                    reportMessage = `SPO2: ${spo2Value}% - Low SPO2 (hypoxemia).`;
+                    precautionsMessage = 'Monitor for symptoms such as shortness of breath, confusion, or fatigue. Consult a doctor if symptoms persist. Potential problems: hypoxemia.';
+                    recommendations = [
+                        { text: 'Avoid strenuous activities and high altitudes to reduce oxygen demand.', },
+                        { text: 'Stay hydrated to help thin mucus and maintain oxygen levels.', },
+                        { text: 'Use supplemental oxygen if prescribed by a doctor.', },
+                        { text: 'Monitor heart rate for any irregularities.', },
+                        { text: 'Maintain a healthy diet rich in iron and vitamins to support oxygen transport.', },
+                        { text: 'Get regular check-ups and consult with a pulmonologist if necessary.', }
+                    ];
+                } else if (spo2Value >= 90 && spo2Value <= 95) {
+                    // Borderline SPO2 condition
+                    reportMessage = `SPO2: ${spo2Value}% - Borderline SPO2 range.`;
+                    precautionsMessage = 'Monitor your oxygen saturation regularly and stay hydrated. If you have underlying health conditions, consult your doctor for further advice.';
+                    recommendations = [
+                        { text: 'Regularly check SPO2 levels and keep a record.', },
+                        { text: 'Stay hydrated to maintain optimal blood volume and oxygenation.', },
+                        { text: 'Monitor for symptoms such as fatigue, shortness of breath, and dizziness.', },
+                        { text: 'Avoid smoking and alcohol which can further decrease oxygen levels.', },
+                        { text: 'Consult with a healthcare provider for comprehensive evaluation and guidance.', },
+                        { text: 'Maintain a healthy lifestyle with balanced nutrition and regular exercise.', }
+                    ];
+                } else {
+                    // Normal SPO2 condition
+                    reportMessage = `SPO2: ${spo2Value}% - Normal SPO2 range.`;
+                    precautionsMessage = 'Your SPO2 is within the normal range. No specific precautions are necessary.';
+                    recommendations = [
+                        { text: 'Continue regular health check-ups for overall well-being.', },
+                        { text: 'Maintain a balanced diet rich in antioxidants and essential nutrients.', },
+                        { text: 'Engage in regular physical activity to enhance cardiovascular health.', },
+                        { text: 'Stay hydrated to support optimal body functions.', },
+                        { text: 'Avoid smoking and excessive alcohol for better lung and heart health.', },
+                        { text: 'Get adequate rest and sleep to promote overall recovery and health.', }
+                    ];
+                }
+            }
+
+            // Display report message
+            reportContainer.innerHTML = `<h4>${reportMessage}</h4>`;
+
+            // Display precautions if applicable
+            if (precautionsMessage) {
+                precautionsDiv.style.display = 'block';
+                precautionsText.textContent = precautionsMessage;
+            } else {
+                precautionsDiv.style.display = 'none';
+            }
+
+            // Display recommendations
+            recommendationsDiv.innerHTML = recommendations.map((recommendation, index) => `
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recommendation ${index + 1}</h5>
+                            <p class="card-text">${recommendation.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Function to get the value parameter from the URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // When the document is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the SPO2 value from the URL parameter
+            const spo2Value = getURLParameter('value');
+
+            // Call the function to assess the SPO2 value
+            assessSPO2(spo2Value);
+        });
+    </script>
+</body>
+
+</html>

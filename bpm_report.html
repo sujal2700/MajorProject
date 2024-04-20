@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPM Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Styling */
+
+	body {
+            background-image: url("F:\\Semester 8\\Major Project\\Website\\img2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .precautions-box {
+            background-color: #105FF2;
+            border: 1px solid #10EBF2;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;  /* Set text color to white */
+            font-size: 1.2em;  /* Increase font size */
+        }
+
+        .card {
+            margin-top: 20px;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        #recommendations .card:nth-child(1) {
+            background: linear-gradient(45deg, #007bff, #1e90ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(2) {
+            background: linear-gradient(45deg, #1e90ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(3) {
+            background: linear-gradient(45deg, #007bff, #4b89da);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(4) {
+            background: linear-gradient(45deg, #4b89da, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(5) {
+            background: linear-gradient(45deg, #007bff, #5c96ff);
+            color: #fff;
+        }
+
+        #recommendations .card:nth-child(6) {
+            background: linear-gradient(45deg, #5c96ff, #007bff);
+            color: #fff;
+        }
+
+        #recommendations .card-body {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">BPM Report</h1>
+
+        <div id="report-container" class="mt-4"></div>
+
+        <div class="precautions-box mt-4" id="precautions" style="display: none;">
+            <p id="precautions-text"></p>
+        </div>
+
+        <!-- Recommendations cards -->
+        <div class="row mt-4" id="recommendations"></div>
+    </div>
+
+    <script>
+        // Function to assess the BPM condition and provide precautions
+        function assessBPM(bpm) {
+            const reportContainer = document.getElementById("report-container");
+            const precautionsDiv = document.getElementById("precautions");
+            const precautionsText = document.getElementById("precautions-text");
+            const recommendationsDiv = document.getElementById("recommendations");
+
+            // Convert BPM to a number
+            const bpmValue = parseFloat(bpm);
+
+            // Assess BPM and provide feedback
+            let reportMessage = '';
+            let precautionsMessage = '';
+            let recommendations = [];
+            if (isNaN(bpmValue)) {
+                reportMessage = 'Invalid BPM value provided.';
+            } else {
+                if (bpmValue < 60) {
+                    // Low BPM condition
+                    reportMessage = `BPM: ${bpmValue} - Low BPM (Bradycardia).`;
+                    precautionsMessage = 'Monitor for symptoms such as dizziness, fatigue, or fainting. Consult a doctor if symptoms persist. Potential problems: bradycardia.';
+                    recommendations = [
+                        { text: 'Stay hydrated to support cardiovascular function and maintain blood volume, aiding in regulating your heart rate.', },
+                        { text: 'Avoid excessive caffeine intake as it can elevate your heart rate and potentially exacerbate bradycardia.', },
+                        { text: 'Engage in light exercises like walking or cycling to stimulate blood flow and improve heart rate.', },
+                        { text: 'Eat a balanced diet rich in potassium and magnesium to support heart muscle function and regulate heart rate.', },
+                        { text: 'Monitor your BPM regularly to track changes and ensure proper management.', },
+                        { text: 'Consult a cardiologist for regular check-ups and proper management of bradycardia.', }
+                    ];
+                } else if (bpmValue > 100) {
+                    // High BPM condition
+                    reportMessage = `BPM: ${bpmValue} - High BPM (Tachycardia).`;
+                    precautionsMessage = 'Rest and avoid strenuous activity. Consult a doctor if you experience chest pain, dizziness, or fainting. Potential problems: tachycardia.';
+                    recommendations = [
+                        { text: 'Practice relaxation techniques like deep breathing to help lower your heart rate and manage stress.', },
+                        { text: 'Avoid strenuous activities and heavy lifting which can further elevate your heart rate.', },
+                        { text: 'Limit alcohol and caffeine intake as they can stimulate your heart and exacerbate tachycardia.', },
+                        { text: 'Eat a heart-healthy diet low in saturated fats and rich in omega-3 fatty acids to support cardiovascular health.', },
+                        { text: 'Engage in moderate-intensity exercises like swimming or jogging to improve cardiovascular fitness and regulate heart rate.', },
+                        { text: 'Consult a cardiologist for proper diagnosis, treatment, and management of tachycardia.', }
+                    ];
+                } else {
+                    // Normal BPM condition
+                    reportMessage = `BPM: ${bpmValue} - Normal BPM range.`;
+                    precautionsMessage = 'Your BPM is within the normal range. No specific precautions are necessary.';
+                    recommendations = [
+                        { text: 'Maintain a healthy lifestyle with regular exercise to improve cardiovascular fitness and overall well-being.', },
+                        { text: 'Eat a balanced diet rich in fruits, vegetables, and lean proteins to support heart health.', },
+                        { text: 'Avoid smoking and excessive alcohol consumption which can negatively impact cardiovascular health.', },
+                        { text: 'Monitor your BPM regularly to track changes and ensure your heart is functioning optimally.', },
+                        { text: 'Stay hydrated by drinking plenty of water to support proper blood circulation and cardiovascular function.', },
+                        { text: 'Consult a healthcare professional for regular check-ups to monitor your cardiovascular health.', }
+                    ];
+                }
+            }
+
+            // Display report message
+            reportContainer.innerHTML = `<h4>${reportMessage}</h4>`;
+
+            // Display precautions if applicable
+            if (precautionsMessage) {
+                precautionsDiv.style.display = 'block';
+                precautionsText.textContent = precautionsMessage;
+            }
+
+            // Display recommendations
+            recommendationsDiv.innerHTML = recommendations.map((recommendation, index) => `
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recommendation ${index + 1}</h5>
+                            <p class="card-text">${recommendation.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Function to get the value parameter from the URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // When the document is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the BPM value from the URL parameter
+            const bpmValue = getURLParameter('value');
+
+            // Call the function to assess the BPM value
+            assessBPM(bpmValue);
+        });
+    </script>
+</body>
+
+</html>
