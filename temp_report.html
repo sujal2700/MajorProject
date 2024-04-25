@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Report</title>
+    <title>BPM Report</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <style>
         /* Styling */
-        body {
-            background-image: url("F:\\Semester 8\\Major Project\\Website\\img2.jpg");
+
+	body {
+            background-image: url("img2.jpg");
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -90,8 +91,9 @@
 
 <body>
     <div class="container">
-        <h1 class="text-center">Temperature Report</h1>
-        <div id="report-container"></div>
+        <h1 class="text-center">BPM Report</h1>
+
+        <div id="report-container" class="mt-4"></div>
 
         <div class="precautions-box mt-4" id="precautions" style="display: none;">
             <p id="precautions-text"></p>
@@ -102,64 +104,58 @@
     </div>
 
     <script>
-        // Function to read URL parameters
-        function getURLParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        // Function to assess the temperature condition and provide precautions
-        function assessTemperature(temperature) {
+        // Function to assess the BPM condition and provide precautions
+        function assessBPM(bpm) {
             const reportContainer = document.getElementById("report-container");
             const precautionsDiv = document.getElementById("precautions");
             const precautionsText = document.getElementById("precautions-text");
             const recommendationsDiv = document.getElementById("recommendations");
 
-            // Convert temperature to a number
-            const tempValue = parseFloat(temperature);
+            // Convert BPM to a number
+            const bpmValue = parseFloat(bpm);
 
-            // Assess temperature and provide feedback
+            // Assess BPM and provide feedback
             let reportMessage = '';
             let precautionsMessage = '';
             let recommendations = [];
-            if (isNaN(tempValue)) {
-                reportMessage = 'Invalid temperature value provided.';
+            if (isNaN(bpmValue)) {
+                reportMessage = 'Invalid BPM value provided.';
             } else {
-                if (tempValue < 95) {
-                    // Low temperature condition
-                    reportMessage = `Temperature: ${tempValue}°F - Low temperature`;
-                    precautionsMessage = 'Keep warm, wear layered clothing, and avoid prolonged exposure to cold temperatures. Potential problems: Hypothermia, frostbite.';
+                if (bpmValue < 60) {
+                    // Low BPM condition
+                    reportMessage = `BPM: ${bpmValue} - Low BPM (Bradycardia).`;
+                    precautionsMessage = 'Monitor for symptoms such as dizziness, fatigue, or fainting. Consult a doctor if symptoms persist. Potential problems: bradycardia.';
                     recommendations = [
-                        { text: 'Wear multiple layers of clothing to trap body heat and maintain warmth.', },
-                        { text: 'Use blankets to stay warm while indoors and maintain a comfortable temperature.', },
-                        { text: 'Avoid staying outdoors for extended periods in cold weather to prevent cold-related illnesses.', },
-                        { text: 'Avoid drinking alcohol and caffeine as they can cause heat loss and lower body temperature.', },
-                        { text: 'Check home heating systems regularly for proper functioning to ensure a warm environment.', },
-                        { text: 'Always keep emergency contact numbers handy in case of cold-related emergencies.', }
+                        { text: 'Stay hydrated to support cardiovascular function and maintain blood volume, aiding in regulating your heart rate.', },
+                        { text: 'Avoid excessive caffeine intake as it can elevate your heart rate and potentially exacerbate bradycardia.', },
+                        { text: 'Engage in light exercises like walking or cycling to stimulate blood flow and improve heart rate.', },
+                        { text: 'Eat a balanced diet rich in potassium and magnesium to support heart muscle function and regulate heart rate.', },
+                        { text: 'Monitor your BPM regularly to track changes and ensure proper management.', },
+                        { text: 'Consult a cardiologist for regular check-ups and proper management of bradycardia.', }
                     ];
-                } else if (tempValue > 100) {
-                    // High temperature condition
-                    reportMessage = `Temperature: ${tempValue}°F - High temperature`;
-                    precautionsMessage = 'Stay hydrated, rest, and avoid strenuous activity. Potential problems: Heat exhaustion, heat stroke.';
+                } else if (bpmValue > 100) {
+                    // High BPM condition
+                    reportMessage = `BPM: ${bpmValue} - High BPM (Tachycardia).`;
+                    precautionsMessage = 'Rest and avoid strenuous activity. Consult a doctor if you experience chest pain, dizziness, or fainting. Potential problems: tachycardia.';
                     recommendations = [
-                        { text: 'Drink at least 8 glasses of water daily to stay hydrated and help regulate body temperature.', },
-                        { text: 'Rest in cool places to lower your body temperature and avoid overheating.', },
-                        { text: 'Use fans or air conditioning to cool down your living spaces and create a comfortable environment.', },
-                        { text: 'Stay out of direct sunlight during peak hours to reduce exposure to intense heat.', },
-                        { text: 'Wear light-colored, loose-fitting clothing to help reflect heat and keep your body cooler.', },
-                        { text: 'Seek immediate medical help if you experience dizziness, nausea, or fainting due to high temperature.', }
+                        { text: 'Practice relaxation techniques like deep breathing to help lower your heart rate and manage stress.', },
+                        { text: 'Avoid strenuous activities and heavy lifting which can further elevate your heart rate.', },
+                        { text: 'Limit alcohol and caffeine intake as they can stimulate your heart and exacerbate tachycardia.', },
+                        { text: 'Eat a heart-healthy diet low in saturated fats and rich in omega-3 fatty acids to support cardiovascular health.', },
+                        { text: 'Engage in moderate-intensity exercises like swimming or jogging to improve cardiovascular fitness and regulate heart rate.', },
+                        { text: 'Consult a cardiologist for proper diagnosis, treatment, and management of tachycardia.', }
                     ];
                 } else {
-                    // Normal temperature condition
-                    reportMessage = `Temperature: ${tempValue}°F - Normal temperature`;
-                    precautionsMessage = 'Your temperature is within the normal range. No specific precautions are necessary.';
+                    // Normal BPM condition
+                    reportMessage = `BPM: ${bpmValue} - Normal BPM range.`;
+                    precautionsMessage = 'Your BPM is within the normal range. No specific precautions are necessary.';
                     recommendations = [
-                        { text: 'Continue to monitor your temperature regularly to ensure it remains stable.', },
-                        { text: 'Maintain a balanced diet rich in fruits and vegetables to support overall health and well-being.', },
-                        { text: 'Engage in regular physical activity to maintain overall health and promote a stable body temperature.', },
-                        { text: 'Stay hydrated by drinking at least 8 glasses of water daily to support proper body functions.', },
-                        { text: 'Avoid smoking and excessive consumption of alcohol to maintain a healthy body temperature and overall health.', },
-                        { text: 'Ensure you get adequate sleep every night to support proper body temperature regulation and overall well-being.', }
+                        { text: 'Maintain a healthy lifestyle with regular exercise to improve cardiovascular fitness and overall well-being.', },
+                        { text: 'Eat a balanced diet rich in fruits, vegetables, and lean proteins to support heart health.', },
+                        { text: 'Avoid smoking and excessive alcohol consumption which can negatively impact cardiovascular health.', },
+                        { text: 'Monitor your BPM regularly to track changes and ensure your heart is functioning optimally.', },
+                        { text: 'Stay hydrated by drinking plenty of water to support proper blood circulation and cardiovascular function.', },
+                        { text: 'Consult a healthcare professional for regular check-ups to monitor your cardiovascular health.', }
                     ];
                 }
             }
@@ -186,9 +182,20 @@
             `).join('');
         }
 
-        // Get the temperature value from the URL and assess it
-        const temperatureValue = getURLParameter("value");
-        assessTemperature(temperatureValue);
+        // Function to get the value parameter from the URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // When the document is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the BPM value from the URL parameter
+            const bpmValue = getURLParameter('value');
+
+            // Call the function to assess the BPM value
+            assessBPM(bpmValue);
+        });
     </script>
 </body>
 
